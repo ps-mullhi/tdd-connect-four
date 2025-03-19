@@ -21,6 +21,19 @@ class Board
     false
   end
 
+  def column_full?(col_index)
+    raise 'col_index is not between 0 and 6' unless col_index.between?(0, 6)
+
+    column = Array.new
+    @board_spots.each do |row|
+      column << row[col_index]
+    end
+
+    return false if column.any? {|spot| spot.value == SpotType::EMPTY}
+
+    true
+  end
+
   private
 
   def winning_row?
@@ -40,7 +53,7 @@ class Board
       @board_spots.each do |row|
         column << row[col_index]
       end
-      
+
       column.each_cons(4) do |four_in_a_row|
         return true if four_in_a_row.all? {|spot| spot.value == SpotType::YELLOW_TOKEN} ||
                        four_in_a_row.all? {|spot| spot.value == SpotType::RED_TOKEN}

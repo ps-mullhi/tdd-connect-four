@@ -119,4 +119,56 @@ describe Board do
       end
     end
   end
+
+  describe '#column_full?' do
+    context 'when the board is newly made' do
+      it 'should return false for all columns' do
+        (0..6).each do |col_index|
+          expect(board.column_full?(col_index)).to be_falsy
+        end
+      end
+    end
+
+    context 'when column is partly full' do
+      before do 
+        board_spots[2][2].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[3][2].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[4][2].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[5][2].instance_variable_set(:@value, SpotType::RED_TOKEN)
+      end
+      
+      it 'should return false' do
+        expect(board.column_full?(2)).to be_falsy
+      end
+    end
+
+    context 'when column is one away from being full' do
+      before do 
+        board_spots[1][4].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[2][4].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[3][4].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[4][4].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[5][4].instance_variable_set(:@value, SpotType::RED_TOKEN)
+      end
+
+      it 'should return false' do
+        expect(board.column_full?(4)).to be_falsy
+      end
+    end
+
+    context 'when column is full' do 
+      before do 
+        board_spots[0][0].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[1][0].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[2][0].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[3][0].instance_variable_set(:@value, SpotType::RED_TOKEN)
+        board_spots[4][0].instance_variable_set(:@value, SpotType::YELLOW_TOKEN)
+        board_spots[5][0].instance_variable_set(:@value, SpotType::RED_TOKEN)
+      end
+
+      it 'should return false' do
+        expect(board.column_full?(0)).to be_truthy
+      end
+    end
+  end
 end
