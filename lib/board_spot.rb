@@ -1,6 +1,7 @@
 require_relative 'spot_type.rb'
 
 class BoardSpot
+  attr_reader :value
 
   def initialize(type)
     @value = type
