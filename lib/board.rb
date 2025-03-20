@@ -22,7 +22,7 @@ class Board
   end
 
   def column_full?(col_index)
-    raise 'col_index is not between 0 and 6' unless col_index.between?(0, 6)
+    raise IndexError unless col_index.between?(0, 6)
 
     column = Array.new
     @board_spots.each do |row|
@@ -33,6 +33,32 @@ class Board
 
     true
   end
+
+  def drop_token(col_index, token)
+    (5).downto(0) do |row_index|
+      if @board_spots[row_index][col_index].value == SpotType::EMPTY
+        @board_spots[row_index][col_index].value = token
+        return
+      end
+    end
+  end
+
+  def print_board 
+    puts "1 2 3 4 5 6 7"
+    puts "---------------"
+    @board_spots.each do |row|
+      row.each do |spot|
+        case spot.value
+        when SpotType::YELLOW_TOKEN then print "Y"
+        when SpotType::RED_TOKEN then print "R"
+        when SpotType::EMPTY then print "_"
+        else "ERROR"
+        end
+        print " "
+      end
+      puts
+    end
+  end 
 
   private
 

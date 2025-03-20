@@ -81,4 +81,30 @@ describe Game do
       expect(game.instance_variable_get(:@non_active_player)).to equal(player_one)
     end
   end
+
+  describe '#player_move' do 
+
+    # ask player for where they want to put their piece
+    # if that column is not full, then add their piece to that new column in lowest possible row
+    # if column is full, make them reprompt 
+    let(:board) {instance_double("Board")}    
+    subject(:game) {described_class.new(board)}
+    let(:player_one) { instance_double('Player', name: 'Player 1', token: SpotType::YELLOW_TOKEN) }
+    
+    context 'when the column entry is valid' do 
+      before do 
+        game.instance_variable_set(:@active_player, player_one)
+        allow(board).to receive(:column_full?).and_return(false)
+        allow(board).to receive(:drop_token)
+        allow(ConsoleUI).to receive(:get_player_move).and_return(3)
+      end
+
+      it 'should raise error and make them re-prompt and update board' do
+        game.player_move
+
+        expect(board).to have_received(:column_full?).with(3)
+        expect(board).to have_received(:drop_token).with(3, player_one.token)
+      end
+    end
+  end
 end
