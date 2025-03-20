@@ -83,10 +83,6 @@ describe Game do
   end
 
   describe '#player_move' do 
-
-    # ask player for where they want to put their piece
-    # if that column is not full, then add their piece to that new column in lowest possible row
-    # if column is full, make them reprompt 
     let(:board) {instance_double("Board")}    
     subject(:game) {described_class.new(board)}
     let(:player_one) { instance_double('Player', name: 'Player 1', token: SpotType::YELLOW_TOKEN) }
